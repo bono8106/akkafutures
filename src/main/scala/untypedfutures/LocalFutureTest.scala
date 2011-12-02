@@ -1,8 +1,6 @@
 package untypedfutures
 
 import akka.actor.Actor
-import akka.actor.ActorRef
-import akka.dispatch.Dispatchers
 
 object LocalFutureTest extends App {
 
