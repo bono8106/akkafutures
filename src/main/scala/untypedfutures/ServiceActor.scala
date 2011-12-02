@@ -4,8 +4,6 @@ import akka.actor.Actor
 
 class ServiceActor extends Actor {
 
-  self.dispatcher = newThreadDispatcher("service")
-
   def process(x: Int) = x*x
 
   def receive = {
