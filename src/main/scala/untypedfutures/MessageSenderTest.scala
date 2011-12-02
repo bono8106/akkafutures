@@ -19,7 +19,7 @@ object MessageSenderTest extends App {
   
   for (i <- 1 to 2) {
     namedThreadActorOf(new Actor {
-      def receive = { case None => actor ! i }
+      def receive = { case None => log("non-actor sender = " + sender); actor ! i }
     }, "sender-" + i) ! None
     Thread.sleep(40)
   }
