@@ -1,12 +1,19 @@
 package object untypedfutures {
   
-  import akka.dispatch.Dispatchers
+  import akka.actor.Actor
+  import akka.actor.ActorSystem
+  import akka.actor.Props
+  
+  lazy val actorSystem = ActorSystem("test")
 
-  def newThreadDispatcher(name: String) = Dispatchers.
-    newExecutorBasedEventDrivenDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
+  def newThreadDispatcher(name: String) = actorSystem.dispatcherFactory.
+    newDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
 
   def log(msg: String) {
     println("[" + Thread.currentThread.getName + "] " + msg)
   }
+  
+  def namedThreadActorOf(f: => Actor, name: String) = 
+    actorSystem.actorOf(Props(f).withDispatcher(newThreadDispatcher(name)))
 
 }

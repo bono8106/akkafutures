@@ -5,17 +5,17 @@ import akka.actor.Actor
 object RemoteFutureTest extends App {
 
   def startService {
-    val service = Actor.actorOf(new ServiceActor).start
+    val service = actorSystem.actorOf(new ServiceActor)
 
-    Actor.remote.start("0.0.0.0", 9999)
-    Actor.remote.register("service", service)
+//    TODO actorSystem.remote.start("0.0.0.0", 9999)
+//    Actor.remote.register("service", service)
   }
 
   def startClient {
-    val remoteService = Actor.remote.actorFor("service", "localhost", 9999)
-    val client = Actor.actorOf(new ClientActor).start
-
-    client ! Go(remoteService)
+//    TODO val remoteService = Actor.remote.actorFor("service", "localhost", 9999)
+//    val client = Actor.actorOf(new ClientActor).start
+//
+//    client ! Go(remoteService)
   }
 
   args match {
