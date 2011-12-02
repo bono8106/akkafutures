@@ -10,11 +10,11 @@ class ServiceActor extends Actor {
 
   def receive = {
     case x: Int =>
-      log("In service actor")
+      log("Service enter")
       self.channel ! process(x)
-      log("Out of service actor")
+      log("Service leave")
     case y =>
-      log("Unkown message " + y)
+      log("Service unkown message " + y)
   }
 
 }

@@ -10,13 +10,13 @@ class ClientActor extends Actor {
 
     def receive = {
       case Go(other: ActorRef) => 
-        log("In client actor")
+        log("Client enter")
         val future = other ? 10
         future onResult {
-          case x => log("Got result " + x); self ! x
+          case x => log("Client got future result " + x); self ! x
         }
-        log("Out of client actor")
-      case other => log("Client Actor got " + other)
+        log("Client leave")
+      case other => log("Client got message " + other)
     }
 
 }
