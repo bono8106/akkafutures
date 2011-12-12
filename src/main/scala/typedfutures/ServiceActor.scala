@@ -1,6 +1,6 @@
 package typedfutures
 
-import akka.actor.TypedActor.{dispatcher, timeout}
+import akka.actor.TypedActor.{dispatcher}
 import akka.dispatch.Future
 import akka.dispatch.KeptPromise
 

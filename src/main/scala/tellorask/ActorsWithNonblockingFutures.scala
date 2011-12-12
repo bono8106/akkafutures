@@ -9,10 +9,12 @@ object ActorsWithNonblockingFutures extends App {
 
   lazy val actorSystem = ActorSystem("test")
 
+  implicit val actorTimeout = actorSystem.settings.ActorTimeout
+
   def newThreadDispatcher(name: String) = actorSystem.dispatcherFactory.
     newDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
 
-  def namedThreadActorOf(f: => Actor, name: String) = 
+  def namedThreadActorOf(f: => Actor, name: String) =
     actorSystem.actorOf(Props(f).withDispatcher(newThreadDispatcher(name)))
 
   def log(msg: String) {
