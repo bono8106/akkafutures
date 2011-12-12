@@ -25,7 +25,7 @@ object LetItCrashTest extends App {
     val exec = namedThreadActorOf(new Executive, "executive")
 
     /**
-     * Counts requests submitted to processor and pending completion.
+     * Counts requests submitted to the exec and pending completion.
      */
     var counter = 0
 
@@ -39,7 +39,7 @@ object LetItCrashTest extends App {
         log("processed " + j + "; pending request counter = " + counter)
       case Fail =>
         Thread.sleep(1000) // let my mailbox accumulate some messages
-        throw new RuntimeException("Service actor failing.")
+        throw new RuntimeException("Director actor failing.")
     }
 
   }
