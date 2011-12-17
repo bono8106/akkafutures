@@ -9,7 +9,7 @@ class ServiceActor extends Actor {
   def receive = {
     case x: Int =>
       log("Service enter")
-      context.currentMessage.sender ! process(x)
+      sender ! process(x)
       log("Service leave")
     case y =>
       log("Service unkown message " + y)

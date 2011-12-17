@@ -30,7 +30,7 @@ object ActorsWithNonblockingFutures extends App {
 
   class ClientActor extends Actor {
     def receive = {
-      case serviceProvider: ActorRef => serviceProvider ? 42 onResult {
+      case serviceProvider: ActorRef => serviceProvider ? 42 onSuccess {
           case response: Int => log("Client got back " + response)
         }
     }

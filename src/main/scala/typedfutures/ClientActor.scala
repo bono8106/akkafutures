@@ -13,7 +13,7 @@ class ClientActor extends Client with Serializable {
         log("Client enter")
         val future = service.square(10)
         val myself = self[Client]
-        future onResult {
+        future onSuccess {
           case x =>
             log("Client got future result " + x)
             myself.other(x)
@@ -22,7 +22,7 @@ class ClientActor extends Client with Serializable {
         }
         log("Client leave")
     }
-    
+
     def other(other: Any) {
       log("Client got message " + other)
     }

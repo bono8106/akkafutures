@@ -1,11 +1,12 @@
 package untypedfutures
 
 import akka.actor.Actor
+import akka.actor.Props
 
 object RemoteFutureTest extends App {
 
   def startService {
-    val service = actorSystem.actorOf(new ServiceActor)
+    val service = actorSystem.actorOf(Props(new ServiceActor))
 
 //    TODO actorSystem.remote.start("0.0.0.0", 9999)
 //    Actor.remote.register("service", service)

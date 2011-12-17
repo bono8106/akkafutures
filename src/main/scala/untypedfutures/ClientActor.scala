@@ -8,10 +8,10 @@ case class Go(other: ActorRef)
 class ClientActor extends Actor {
 
     def receive = {
-      case Go(other: ActorRef) => 
+      case Go(other: ActorRef) =>
         log("Client enter")
         val future = other ? 10
-        future onResult {
+        future onSuccess {
           case x =>
             log("Client got future result " + x)
             self ! x
