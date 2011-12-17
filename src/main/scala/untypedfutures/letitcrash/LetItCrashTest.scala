@@ -1,8 +1,7 @@
 package untypedfutures.letitcrash
 
 import akka.actor.Actor
-import akka.actor.ActorRef
-import untypedfutures.{actorSystem, namedThreadActorOf, log}
+import untypedfutures.{namedThreadActorOf, log}
 
 object LetItCrashTest extends App {
 
