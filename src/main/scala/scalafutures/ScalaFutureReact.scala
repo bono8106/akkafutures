@@ -23,7 +23,7 @@ object ScalaFutureReact extends App {
     lazy val handler: PartialFunction[Any, Unit] = {
       case serviceProvider: Actor =>
         log("Client enter " + self)
-        val future = serviceProvider !! 42;
+        val future = serviceProvider !! 42
         self mkBody {
           self ! "cannot interleave with blocking receive on future"
           log("Entering blockiing receive...")
