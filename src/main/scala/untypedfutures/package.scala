@@ -4,7 +4,7 @@ package object untypedfutures {
   import akka.actor.ActorSystem
   import akka.actor.Props
 
-  lazy val actorSystem = ActorSystem("test")
+  lazy val actorSystem = ActorSystem("testuntyped")
 
   implicit val actorTimeout = actorSystem.settings.ActorTimeout
 
