@@ -24,7 +24,7 @@ object ScalaFutureReact extends App {
       case serviceProvider: Actor =>
         log("Client enter " + self)
         val future = serviceProvider !! 42;
-        { () =>
+        self mkBody {
           self ! "cannot interleave with blocking receive on future"
           log("Entering blockiing receive...")
           future.inputChannel react {
