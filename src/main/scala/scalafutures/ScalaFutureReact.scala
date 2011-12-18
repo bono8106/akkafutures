@@ -27,6 +27,8 @@ object ScalaFutureReact extends App {
         self mkBody {
           self ! "cannot interleave with blocking receive on future"
           log("Entering blockiing receive...")
+          log("The future's input channel = " + future.inputChannel)
+          log("My channel = " + self)
           future.inputChannel react {
             case response: Int =>
               log("Client got future result " + response)
