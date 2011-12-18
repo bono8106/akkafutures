@@ -8,6 +8,7 @@ object FutureListenerInterleaving extends App {
     def receive = {
       case x: Int =>
         Thread.sleep(20)
+        println("sender = " + sender)
         sender ! x * x
     }
   }, "test-actor") ? 42
