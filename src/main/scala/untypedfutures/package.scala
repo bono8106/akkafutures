@@ -6,7 +6,7 @@ package object untypedfutures {
 
   lazy val actorSystem = ActorSystem("testuntyped")
 
-  implicit val actorTimeout = actorSystem.settings.ActorTimeout
+  implicit lazy val actorTimeout = actorSystem.settings.ActorTimeout
 
   def newThreadDispatcher(name: String) = actorSystem.dispatcherFactory.
     newDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
