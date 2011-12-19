@@ -1,22 +1,57 @@
 package untypedfutures
 
 import akka.actor.Actor
+import akka.actor.ActorSystem
 import akka.actor.Props
+import com.typesafe.config.ConfigFactory
+import akka.remote.Remote
 
 object RemoteFutureTest extends App {
 
   def startService {
-    val service = actorSystem.actorOf(Props(new ServiceActor))
+    val serviceConfig = ConfigFactory.parseString("""
+      akka.actor.provider = "akka.remote.RemoteActorRefProvider"
+      akka.cluster.nodename = "serviceNode"
+      akka.remote.server {
+        # The hostname or ip to bind the remoting to,
+        # InetAddress.getLocalHost.getHostAddress is used if empty
+        hostname = "localhost"
 
-//    TODO actorSystem.remote.start("0.0.0.0", 9999)
-//    Actor.remote.register("service", service)
+        # The default remote server port clients should connect to.
+        # Default is 2552 (AKKA)
+        port = 2552
+
+        # Enable untrusted mode for full security of server managed actors, allows
+        # untrusted clients to connect.
+        untrusted-mode = on
+      }
+    """)
+    val serviceSystem = ActorSystem("serviceSystem", ConfigFactory.load(serviceConfig))
+
+    val service = serviceSystem.actorOf(Props(new ServiceActor), "service")
+    log(service.path.toString)
   }
 
   def startClient {
-//    TODO val remoteService = Actor.remote.actorFor("service", "localhost", 9999)
-//    val client = Actor.actorOf(new ClientActor).start
-//
-//    client ! Go(remoteService)
+    val clientConfig = ConfigFactory.parseString("""
+      akka.actor.provider = "akka.remote.RemoteActorRefProvider"
+      akka.cluster.nodename = "clientNode"
+      akka.remote.server {
+        # The hostname or ip to bind the remoting to,
+        # InetAddress.getLocalHost.getHostAddress is used if empty
+        hostname = ""
+
+        # The default remote server port clients should connect to.
+        # Default is 2552 (AKKA)
+        port = 2553
+      }
+    """)
+    val clientSystem = ActorSystem("clientSystem", ConfigFactory.load(clientConfig))
+
+    val remoteService = clientSystem.actorFor("akka://serviceSystem@localhost:2552/user/service")
+    val client = clientSystem.actorOf(Props(new ClientActor), "client")
+
+    client ! Go(remoteService)
   }
 
   args match {
