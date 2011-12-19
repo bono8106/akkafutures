@@ -30,9 +30,9 @@ object ScalaFutureNonBlockingAPI extends App {
 
     final def when[T](inputChannel: InputChannel[T])(block: T => Unit): Nothing = {
       eventloop { // wait for the future in a non-blocking fashion
-        case inputChannel ! (response: T) =>
+        case inputChannel ! response =>
           try {
-            block(response)
+            block(response.asInstanceOf[T])
           } finally {
             eventloop(behavior) // we got the future result, so go back to original eventloop
           }
