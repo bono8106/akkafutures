@@ -5,9 +5,11 @@ import akka.actor.ActorRef
 import scala.annotation.tailrec
 
 object Actors {
+
   def run(alice: ActorRef, bob: ActorRef, carol: ActorRef) {
     alice ! (bob, carol)
   }
+
 }
 
 class Alice extends Actor {
