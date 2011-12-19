@@ -8,6 +8,14 @@ import scala.actors.Actor._
 
 object ScalaFutureNonBlockingAPI extends App {
 
+  /**
+   * Note: while the E API is fully nonblocking here, like in E,
+   * it must return Nothing, and therefore lacks the chaining
+   * of when statements, which is possible in E.
+   *
+   * @author Nikolay
+   *
+   */
   abstract class EActor extends Actor {
 
     def receive: PartialFunction[Any, Unit]
