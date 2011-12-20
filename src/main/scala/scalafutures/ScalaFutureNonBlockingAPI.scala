@@ -28,13 +28,13 @@ object ScalaFutureNonBlockingAPI extends App {
 
     final def when[T](future: Future[T])(block: T => Unit): Nothing = when(future.inputChannel)(block)
 
-    final def when[T](inputChannel: InputChannel[T])(block: T => Unit): Nothing = {
+    final def when[T](inputChannel: InputChannel[T])(handler: T => Unit): Nothing = {
       eventloop { // wait for the future in a non-blocking fashion
-        case inputChannel ! response =>
+        case inputChannel ! response => // we got the future's result, so ...
           try {
-            block(response.asInstanceOf[T])
+            handler(response.asInstanceOf[T]) // evaluate the handler with the future's result
           } finally {
-            eventloop(behavior) // we got the future result, so go back to original eventloop
+            eventloop(behavior) // go back to original eventloop
           }
         case other => behavior(other) // continue handling other messages while waiting on the future's result
       }
