@@ -1,4 +1,5 @@
 package tellorask
+import com.typesafe.config.ConfigFactory
 
 object ActorsWithNonblockingFutures extends App {
 
@@ -7,15 +8,17 @@ object ActorsWithNonblockingFutures extends App {
   import akka.actor.ActorSystem
   import akka.actor.Props
 
-  lazy val actorSystem = ActorSystem("test")
+  lazy val actorSystem = ActorSystem("test", ConfigFactory.parseString("""
+      dispatchers {
+        client.type = "PinnedDispatcher"
+        service.type = "PinnedDispatcher"
+      }
+      """))
 
   implicit val actorTimeout = actorSystem.settings.ActorTimeout
 
-  def newThreadDispatcher(name: String) = actorSystem.dispatcherFactory.
-    newDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
-
   def namedThreadActorOf(f: => Actor, name: String) =
-    actorSystem.actorOf(Props(f).withDispatcher(newThreadDispatcher(name)))
+    actorSystem.actorOf(Props(creator = f _, dispatcher = "dispatchers." + name), name = name)
 
   def log(msg: String) {
     println("[" + Thread.currentThread.getName + "] " + msg)

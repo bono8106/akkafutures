@@ -11,7 +11,7 @@ object FutureListenerInterleaving extends App {
         println("sender = " + sender)
         sender ! x * x
     }
-  }, "test-actor") ? 42
+  }, "testactor") ? 42
 
   future onComplete { result =>
     println("handler A enter for " + result)

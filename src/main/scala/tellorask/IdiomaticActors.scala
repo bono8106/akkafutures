@@ -6,14 +6,17 @@ object IdiomaticActors extends App {
   import akka.actor.ActorRef
   import akka.actor.ActorSystem
   import akka.actor.Props
+  import com.typesafe.config.ConfigFactory
 
-  lazy val actorSystem = ActorSystem("test")
+  lazy val actorSystem = ActorSystem("test", ConfigFactory.parseString("""
+      dispatchers {
+        client.type = "PinnedDispatcher"
+        service.type = "PinnedDispatcher"
+      }
+      """))
 
-  def newThreadDispatcher(name: String) = actorSystem.dispatcherFactory.
-    newDispatcher(name).setCorePoolSize(1).setMaxPoolSize(1).build
-
-  def namedThreadActorOf(f: => Actor, name: String) = 
-    actorSystem.actorOf(Props(f).withDispatcher(newThreadDispatcher(name)))
+  def namedThreadActorOf(f: => Actor, name: String) =
+    actorSystem.actorOf(Props(f).withDispatcher("dispatchers." + name))
 
   def log(msg: String) {
     println("[" + Thread.currentThread.getName + "] " + msg)
