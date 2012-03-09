@@ -1,12 +1,14 @@
 package tellorask
+
+import akka.actor.Actor
+import akka.actor.ActorRef
+import akka.actor.ActorSystem
+import akka.actor.Props
+import akka.pattern.ask
+import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 
 object ActorsWithNonblockingFutures extends App {
-
-  import akka.actor.Actor
-  import akka.actor.ActorRef
-  import akka.actor.ActorSystem
-  import akka.actor.Props
 
   lazy val actorSystem = ActorSystem("test", ConfigFactory.parseString("""
       dispatchers {
@@ -15,7 +17,7 @@ object ActorsWithNonblockingFutures extends App {
       }
       """))
 
-  implicit val actorTimeout = actorSystem.settings.ActorTimeout
+  implicit val actorTimeout = Timeout(3000L)
 
   def namedThreadActorOf(f: => Actor, name: String) =
     actorSystem.actorOf(Props(creator = f _, dispatcher = "dispatchers." + name), name = name)

@@ -26,7 +26,7 @@ object LetItCrashOrPipe extends App {
   val actorSystem = ActorSystem()
   val typedActors = TypedActor(actorSystem)
 
-  val actor = typedActors.typedActorOf(classOf[PipeOrCrash], classOf[PipeOrCrashActor], Props())
+  val actor = typedActors.typedActorOf(TypedProps[PipeOrCrashActor]())
 
   actor.go
 

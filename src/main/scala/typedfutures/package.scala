@@ -2,7 +2,7 @@ package object typedfutures {
 
   import akka.actor.TypedActor
   import akka.actor.ActorSystem
-  import akka.actor.Props
+  import akka.actor.TypedProps
   import com.typesafe.config.ConfigFactory
 
   lazy val actorSystem = ActorSystem("testtyped", ConfigFactory.parseString("""
@@ -19,6 +19,6 @@ package object typedfutures {
   }
 
   def namedThreadActorOf[R <: AnyRef, T <: R](interface: Class[R], impl: Class[T], name: String): R =
-    typedActors.typedActorOf(interface, impl, Props().withDispatcher("dispatchers." + name))
+    typedActors.typedActorOf(TypedProps(interface, impl).withDispatcher("dispatchers." + name))
 
 }

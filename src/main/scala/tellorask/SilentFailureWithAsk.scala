@@ -5,6 +5,8 @@ import akka.actor.ActorRef
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.dispatch.Future
+import akka.pattern.ask
+import akka.util.Timeout
 
 object SilentFailureWithAsk extends App {
 
@@ -20,7 +22,7 @@ object SilentFailureWithAsk extends App {
     def receive = {
       case service: ActorRef =>
         // ActorRef.ask failure
-        implicit def timeout = actorSystem.settings.ActorTimeout
+        implicit def timeout = Timeout(3000L)
         service ? 42 onComplete { result => println("Ask completed with " + result) }
 
         // Future.apply failure
