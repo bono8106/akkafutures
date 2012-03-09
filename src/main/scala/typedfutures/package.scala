@@ -19,6 +19,6 @@ package object typedfutures {
   }
 
   def namedThreadActorOf[R <: AnyRef, T <: R](interface: Class[R], impl: Class[T], name: String): R =
-    typedActors.typedActorOf(TypedProps(interface, impl).withDispatcher("dispatchers." + name))
+    typedActors.typedActorOf(TypedProps[T](interface, impl).withDispatcher("dispatchers." + name))
 
 }

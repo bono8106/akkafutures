@@ -2,6 +2,7 @@ package untypedfutures
 
 import akka.actor.Actor
 import akka.actor.ActorRef
+import akka.pattern.ask
 
 case class Go(other: ActorRef)
 

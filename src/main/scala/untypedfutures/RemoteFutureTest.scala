@@ -4,15 +4,17 @@ import akka.actor.Actor
 import akka.actor.ActorSystem
 import akka.actor.Props
 import com.typesafe.config.ConfigFactory
-import akka.remote.Remote
 
 object RemoteFutureTest extends App {
 
   def startService {
     val serviceConfig = ConfigFactory.parseString("""
       akka.actor.provider = "akka.remote.RemoteActorRefProvider"
-      akka.cluster.nodename = "serviceNode"
-      akka.remote.server {
+
+      # Enable untrusted mode for full security of server managed actors, allows
+      # untrusted clients to connect.
+      akka.remote.untrusted-mode = on
+      akka.remote.netty {
         # The hostname or ip to bind the remoting to,
         # InetAddress.getLocalHost.getHostAddress is used if empty
         hostname = "localhost"
@@ -20,10 +22,6 @@ object RemoteFutureTest extends App {
         # The default remote server port clients should connect to.
         # Default is 2552 (AKKA)
         port = 2552
-
-        # Enable untrusted mode for full security of server managed actors, allows
-        # untrusted clients to connect.
-        untrusted-mode = on
       }
     """)
     val serviceSystem = ActorSystem("serviceSystem", ConfigFactory.load(serviceConfig))
@@ -35,8 +33,11 @@ object RemoteFutureTest extends App {
   def startClient {
     val clientConfig = ConfigFactory.parseString("""
       akka.actor.provider = "akka.remote.RemoteActorRefProvider"
-      akka.cluster.nodename = "clientNode"
-      akka.remote.server {
+
+      # Enable untrusted mode for full security of server managed actors, allows
+      # untrusted clients to connect.
+      akka.remote.untrusted-mode = on
+      akka.remote.netty {
         # The hostname or ip to bind the remoting to,
         # InetAddress.getLocalHost.getHostAddress is used if empty
         hostname = ""

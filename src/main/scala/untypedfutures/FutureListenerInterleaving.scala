@@ -1,9 +1,10 @@
 package untypedfutures
 
 import akka.actor.Actor
+import akka.pattern.ask
 
 object FutureListenerInterleaving extends App {
-
+  
   val future = namedThreadActorOf(new Actor {
     def receive = {
       case x: Int =>

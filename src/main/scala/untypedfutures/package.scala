@@ -3,6 +3,7 @@ package object untypedfutures {
   import akka.actor.Actor
   import akka.actor.ActorSystem
   import akka.actor.Props
+  import akka.util.Timeout
   import com.typesafe.config.ConfigFactory
 
   lazy val actorSystem = ActorSystem("testuntyped", ConfigFactory.parseString("""
@@ -19,7 +20,7 @@ package object untypedfutures {
       }
       """))
 
-  implicit lazy val actorTimeout = actorSystem.settings.ActorTimeout
+  implicit lazy val actorTimeout = Timeout(3000L)
 
   def log(msg: String) {
     println("[" + Thread.currentThread.getName + "] " + msg)

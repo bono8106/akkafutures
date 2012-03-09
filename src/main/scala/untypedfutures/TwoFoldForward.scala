@@ -1,6 +1,7 @@
 package untypedfutures
 
 import akka.actor.Actor
+import akka.pattern.ask
 
 object TwoFoldForward extends App {
 

@@ -4,11 +4,16 @@ import akka.actor.{ ActorSystem, Props }
 import com.typesafe.config.ConfigFactory
 
 object RemoteEOrder extends App {
+  
+  // TODO Fails
 
   val defaultConfig = ConfigFactory.parseString("""
       akka.actor.provider = "akka.remote.RemoteActorRefProvider"
-      akka.cluster.nodename = "" #OVERRIDE
-      akka.remote.server {
+
+      # Enable untrusted mode for full security of server managed actors, allows
+      # untrusted clients to connect.
+      akka.remote.untrusted-mode = on
+      akka.remote.netty {
         # The hostname or ip to bind the remoting to,
         # InetAddress.getLocalHost.getHostAddress is used if empty
         hostname = "localhost"
@@ -18,13 +23,6 @@ object RemoteEOrder extends App {
         port = 2552 #OVERRIDE
 
         message-frame-size = 10 MiB
-
-        # Enable untrusted mode for full security of server managed actors, allows
-        # untrusted clients to connect.
-        untrusted-mode = on
-      }
-      akka.remote.client {
-        message-frame-size = 10 MiB
       }
   """)
 
@@ -32,8 +30,8 @@ object RemoteEOrder extends App {
     import collection.JavaConversions._
 
     val config = ConfigFactory.parseMap(Map(
-        "akka.cluster.nodename" -> name,
-        "akka.remote.server.port" -> port))
+        //"akka.cluster.nodename" -> name,
+        "akka.remote.netty.port" -> port))
 
     ActorSystem(name, ConfigFactory.load(config.withFallback(defaultConfig)))
   }

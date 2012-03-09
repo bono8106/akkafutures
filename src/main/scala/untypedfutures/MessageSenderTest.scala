@@ -8,9 +8,9 @@ object MessageSenderTest extends App {
 
     def receive = {
       case m: Int =>
-      log("Service Sender A1 = " + context.sender + "; " + sender)
+      log("Service Sender A1 = " + context.sender + "; " + sender + " (msg " + m + ")")
       Thread.sleep(100)
-      log("Service Sender A2 = " + context.sender + "; " + sender)
+      log("Service Sender A2 = " + context.sender + "; " + sender + " (msg " + m + ")")
     }
 
   }

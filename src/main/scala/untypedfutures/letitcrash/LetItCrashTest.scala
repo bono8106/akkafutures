@@ -4,6 +4,8 @@ import akka.actor.Actor
 import untypedfutures.{namedThreadActorOf, log}
 
 object LetItCrashTest extends App {
+  
+  // TODO Runtime error
 
   case class Request(i: Int)
   case class Response(j: Int)
