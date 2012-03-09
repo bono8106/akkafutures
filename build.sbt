@@ -1,9 +1,5 @@
 name := "akkafutures"
 
-addCompilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.8-SNAPSHOT")
-
-scalacOptions <+= scalaSource in Compile map { "-P:sxr:base-directory:" + _.getAbsolutePath }
-
 resolvers := Seq(
   "Akka" at "http://akka.io/repository/",
   "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
