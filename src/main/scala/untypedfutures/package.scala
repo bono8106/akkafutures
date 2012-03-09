@@ -1,12 +1,13 @@
 package object untypedfutures {
 
   import akka.actor.Actor
+  import akka.actor.ActorRefFactory
   import akka.actor.ActorSystem
   import akka.actor.Props
   import akka.util.Timeout
   import com.typesafe.config.ConfigFactory
 
-  lazy val actorSystem = ActorSystem("testuntyped", ConfigFactory.parseString("""
+  implicit lazy val actorSystem = ActorSystem("testuntyped", ConfigFactory.parseString("""
       dispatchers {
         client.type = "PinnedDispatcher"
         service.type = "PinnedDispatcher"
@@ -26,7 +27,7 @@ package object untypedfutures {
     println("[" + Thread.currentThread.getName + "] " + msg)
   }
 
-  def namedThreadActorOf(f: => Actor, name: String) =
-    actorSystem.actorOf(Props(f).withDispatcher("dispatchers." + name), name = name)
+  def namedThreadActorOf(f: => Actor, name: String)(implicit actorRefFactory: ActorRefFactory) =
+    actorRefFactory.actorOf(Props(f).withDispatcher("dispatchers." + name), name = name)
 
 }

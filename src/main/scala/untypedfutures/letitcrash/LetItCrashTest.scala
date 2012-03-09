@@ -1,11 +1,9 @@
 package untypedfutures.letitcrash
 
 import akka.actor.Actor
-import untypedfutures.{namedThreadActorOf, log}
+import untypedfutures.{namedThreadActorOf, log, actorSystem}
 
 object LetItCrashTest extends App {
-  
-  // TODO Runtime error
 
   case class Request(i: Int)
   case class Response(j: Int)
@@ -23,7 +21,8 @@ object LetItCrashTest extends App {
 
   class Director extends Actor {
 
-    val exec = namedThreadActorOf(new Executive, "executive")
+    // Must use context to create the child actor, to ensure unique name upon restarts
+    val exec = namedThreadActorOf(new Executive, "executive")(context)
 
     /**
      * Counts requests submitted to the exec and pending completion.

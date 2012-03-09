@@ -9,7 +9,7 @@ object TwoFoldForward extends App {
 
   class A extends Actor {
 
-    val b = namedThreadActorOf(new B, "B")
+    val b = namedThreadActorOf(new B, "B")(context)
 
     def receive = {
       case Go =>
@@ -21,8 +21,8 @@ object TwoFoldForward extends App {
 
   class B extends Actor {
 
-    val c = namedThreadActorOf(new C, "C")
-    val d = namedThreadActorOf(new D, "D")
+    val c = namedThreadActorOf(new C, "C")(context)
+    val d = namedThreadActorOf(new D, "D")(context)
 
     def receive = {
       case m: String =>
