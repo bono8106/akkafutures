@@ -1,12 +1,10 @@
 package eorder
 
-import akka.actor.{ ActorSystem, Props }
+import akka.actor.{ ActorSystem, Address, Props }
 import com.typesafe.config.ConfigFactory
 
 object RemoteEOrder extends App {
   
-  // TODO Fails
-
   val defaultConfig = ConfigFactory.parseString("""
       akka.actor.provider = "akka.remote.RemoteActorRefProvider"
 
@@ -44,8 +42,8 @@ object RemoteEOrder extends App {
   val bob = bobSystem.actorOf(Props(new Bob), "Bob")
   val carol = carolSystem.actorOf(Props(new Carol), "Carol")
 
-  val bobRemote = aliceSystem.actorFor(bob.path)
-  val carolRemote = aliceSystem.actorFor(carol.path)
+  val bobRemote = aliceSystem.actorFor(bob.path.toStringWithAddress(Address("akka", "bobSystem", "localhost", 2553)))
+  val carolRemote = aliceSystem.actorFor(carol.path.toStringWithAddress(Address("akka", "carolSystem", "localhost", 2554)))
 
   Actors.run(alice, bobRemote, carolRemote)
 
