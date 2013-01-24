@@ -1,9 +1,14 @@
 package typedfutures
 
 import akka.actor._
-import akka.dispatch.Future
+import scala.concurrent.Future
 
 object LetItCrashOrPipe extends App {
+
+  val actorSystem = ActorSystem()
+  val typedActors = TypedActor(actorSystem)
+
+  implicit def executionContext = actorSystem.dispatcher
 
   trait PipeOrCrash {
     def pipe: Future[Any]
@@ -22,9 +27,6 @@ object LetItCrashOrPipe extends App {
     }
 
   }
-
-  val actorSystem = ActorSystem()
-  val typedActors = TypedActor(actorSystem)
 
   val actor: PipeOrCrash = typedActors.typedActorOf(TypedProps[PipeOrCrashActor]())
 

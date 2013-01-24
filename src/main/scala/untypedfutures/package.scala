@@ -22,6 +22,7 @@ package object untypedfutures {
       """))
 
   implicit lazy val actorTimeout = Timeout(3000L)
+  implicit def executionContext = actorSystem.dispatcher
 
   def log(msg: String) {
     println("[" + Thread.currentThread.getName + "] " + msg)

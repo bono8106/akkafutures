@@ -1,8 +1,7 @@
 package typedfutures
 
 import akka.actor.TypedActor.{dispatcher}
-import akka.dispatch.Future
-import akka.dispatch.KeptPromise
+import scala.concurrent.Future
 
 trait Service {
   def square(x: Int): Future[Int]
@@ -14,7 +13,7 @@ class ServiceActor extends Service with Serializable {
 
   def square(x: Int) = {
     log("Service enter")
-    val result = new KeptPromise(Right(process(x)))
+    val result = Future.successful(process(x))
     log("Service leave")
     result
   }

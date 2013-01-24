@@ -4,13 +4,14 @@ import akka.actor.Actor
 import akka.actor.ActorRef
 import akka.actor.ActorSystem
 import akka.actor.Props
-import akka.dispatch.Future
+import scala.concurrent.Future
 import akka.pattern.ask
 import akka.util.Timeout
 
 object SilentFailureWithAsk extends App {
 
   val actorSystem = ActorSystem()
+  implicit def executionContext = actorSystem.dispatcher
 
   class Service extends Actor {
     def receive = {
@@ -26,7 +27,6 @@ object SilentFailureWithAsk extends App {
         service ? 42 onComplete { result => println("Ask completed with " + result) }
 
         // Future.apply failure
-        implicit def dispatcher = actorSystem.dispatcher
         Future { throw new Exception("future failed") } onComplete { result => println("Future completed with " + result) }
     }
   }

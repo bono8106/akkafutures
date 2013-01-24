@@ -18,6 +18,7 @@ object ActorsWithNonblockingFutures extends App {
       """))
 
   implicit val actorTimeout = Timeout(3000L)
+  implicit def executionContext = actorSystem.dispatcher
 
   def namedThreadActorOf(f: => Actor, name: String) =
     actorSystem.actorOf(Props(creator = f _, dispatcher = "dispatchers." + name), name = name)

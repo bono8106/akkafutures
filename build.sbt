@@ -1,18 +1,14 @@
 name := "akkafutures"
 
-addCompilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.8-SNAPSHOT")
+scalaVersion := "2.10.0"
+
+addCompilerPlugin("org.scala-sbt.sxr" %% "sxr" % "0.3.0-SNAPSHOT")
 
 scalacOptions <+= scalaSource in Compile map { "-P:sxr:base-directory:" + _.getAbsolutePath }
 
-resolvers := Seq(
-  "Akka" at "http://akka.io/repository/",
-  "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
-  "Akka-snapshots" at "http://akka.io/snapshots/",
-  "Guiceyfruit" at "http://guiceyfruit.googlecode.com/svn/repo/releases/"
-)
-
 libraryDependencies ++= Seq(
-  "com.typesafe.akka" % "akka-actor" % "2.0" withSources,
-  "com.typesafe.akka" % "akka-remote" % "2.0" withSources
+  "com.typesafe.akka" % "akka-actor_2.10" % "2.1.0" withSources,
+  "com.typesafe.akka" % "akka-remote_2.10" % "2.1.0" withSources
 )
 
+EclipseKeys.withSource := true

@@ -14,7 +14,7 @@ object TwoFoldForward extends App {
     def receive = {
       case Go =>
         val f = b ? "hello"
-        f onSuccess { case r => log("resolved to " + r + " == " + f.value.get.right.get) }
+        f onSuccess { case r => log("resolved to " + r + " == " + f.value.get) }
         f onFailure { case e => log("smashed with " + e) }
     }
   }
